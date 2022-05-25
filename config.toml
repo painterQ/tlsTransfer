@@ -1,5 +1,21 @@
 [TLS]
-#是否验证客户端证书
-#密码套件
-#客户端证书CN
-#
+ClientAuth = true #是否验证客户端证书
+CipherSuit = ["TLS_AES_128_GCM_SHA256"]#密码套件
+ClientCertCommandName="Painter" #客户端证书CN
+disableTLSLow = true #禁用1.1及以下
+
+[ip]
+out="192.168.3.1"
+in="127.0.0.1"
+
+[[PortMap]]
+fromPort = 8080
+toPort = 8081
+
+[[alert]]
+url= ''
+body=''
+
+[[alert]]
+url= ''
+body=''
