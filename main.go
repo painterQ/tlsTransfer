@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	_ "embed"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 )
@@ -44,7 +45,11 @@ func main() {
 	tl := tls.NewListener(l, &config)
 
 	http.Serve(tl, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("hello world!"))
+		rr, err := http.Post("https://www.baidu.com", "text", r.Body)
+		if err != nil {
+			fmt.Printf("###err:%v", err)
+		}
+		io.CopyBuffer(w, rr.Body, make([]byte, 128))
 	}))
 	fmt.Println("end")
 }
