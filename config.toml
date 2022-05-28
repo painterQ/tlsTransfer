@@ -1,10 +1,12 @@
+DBPath = "./data"
+
 [TLS]
 ClientAuth = true #是否验证客户端证书
 CipherSuit = ["TLS_AES_128_GCM_SHA256"]#密码套件
 ClientCertCommandName="Painter" #客户端证书CN
-disableTLSLow = true #禁用1.1及以下
+DisableTLSLow = true #禁用1.1及以下
 
-[ip]
+[IP]
 out="192.168.3.1"
 in="127.0.0.1"
 
@@ -12,10 +14,10 @@ in="127.0.0.1"
 fromPort = 8080
 toPort = 8081
 
-[[alert]]
+[[Alert]]
 url= ''
 body=''
 
-[[alert]]
+[[Alert]]
 url= ''
 body=''
