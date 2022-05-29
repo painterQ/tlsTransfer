@@ -1,8 +1,11 @@
 package config
 
 //go:generate stringer -type CipherSuit -linecomment
+//CipherSuit cipher suit
 type CipherSuit int
 
+//cipher suit enum
+//nolint
 const (
 	//TLS_AES_128_GCM_SHA256
 	TLS_AES_128_GCM_SHA256 CipherSuit = iota
@@ -18,7 +21,7 @@ func init() {
 	}
 }
 
-var defaultConfig = &ConfigStruct{
+var defaultConfig = &Struct{
 	TLS: TLSConfigStruct{
 		CLientAuth:            true,
 		CipherSuit:            []string{"TLS_AES_128_GCM_SHA256"},

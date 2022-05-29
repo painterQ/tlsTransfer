@@ -5,3 +5,8 @@
 4. 提供docker镜像
 5. 支持使用server酱推送，支持使用钉钉机器人
 6. TLS双向认证
+
+```
+go install  golang.org/x/tools/cmd/stringer@latest
+go install github.com/davidrjenni/reftools/cmd/fillstruct@latest
+```
