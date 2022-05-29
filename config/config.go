@@ -16,6 +16,7 @@ const fileName = "config.toml"
 
 //Struct config struct
 type Struct struct {
+	LogPath string          `toml:"LogPath"`
 	DBPath  string          `toml:"DBPath"`
 	TLS     TLSConfigStruct `toml:"TLS"`
 	IP      IPConfigStruct  `toml:"IP"`
@@ -26,9 +27,8 @@ type Struct struct {
 //TLSConfigStruct tls config struct
 type TLSConfigStruct struct {
 	CLientAuth            bool     `toml:"CLientAuth"`
-	CipherSuit            []string `toml:""`
-	ClientCertCommandName string   `toml:""`
-	DisableTLSLow         bool     `toml:"DisableTLSLow"`
+	CipherSuit            []string `toml:"CipherSuit"`
+	ClientCertCommandName string   `toml:"ClientCertCommandName"`
 }
 
 //IPConfigStruct if config
@@ -86,7 +86,7 @@ func GetConfigDirPath(log logger.Logger) (ret io.ReadCloser, dir string, err err
 	if os.IsNotExist(serr) {
 		//创建文件，并写入默认文件
 		log.Noticef("generate default config file at %v", dir)
-		err = Reset(dir, defaultConfig)
+		err = InitConfig(dir)
 		if err != nil {
 			return nil, "", fmt.Errorf(errGetFilePath, err.Error())
 		}
@@ -114,6 +114,22 @@ func Load(r io.Reader) (*Struct, error) {
 	return config, nil
 }
 
+//InitConfig init default config
+func InitConfig(dir string) error {
+	f, err := os.OpenFile(path.Join(dir, fileName), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
+	if err != nil {
+		return fmt.Errorf("reset config at %v err: %v", dir, err.Error())
+	}
+	defer func() {
+		_ = f.Close()
+	}()
+	_, err = f.Write([]byte(defaultConfigFileContent))
+	if err != nil {
+		return fmt.Errorf("reset config at %v err: %v", dir, err.Error())
+	}
+	return nil
+}
+
 //Reset reset config file
 func Reset(dir string, in *Struct) error {
 	f, err := os.OpenFile(path.Join(dir, fileName), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0777)
@@ -130,3 +146,39 @@ func Reset(dir string, in *Struct) error {
 	}
 	return nil
 }
+
+var defaultConfigFileContent = `DBPath = "./data"
+LogPath = "./log"
+
+[TLS]
+ClientAuth = true #是否验证客户端证书
+CipherSuit = ["TLS_AES_128_GCM_SHA256"]#密码套件
+ClientCertCommandName="Painter" #客户端证书CN
+DisableTLSLow = true #禁用1.1及以下
+###############################################
+#   TLS_AES_128_GCM_SHA256
+# 	TLS_AES_256_GCM_SHA384
+# 	TLS_CHACHA20_POLY1305_SHA256
+# 	TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+# 	TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+# 	TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+# 	TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+# 	TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+# 	TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+
+[IP]
+out="192.168.3.1"
+in="127.0.0.1"
+
+[[PortMap]]
+fromPort = 8080
+toPort = 8081
+
+[[Alert]]
+url= ''
+body=''
+
+[[Alert]]
+url= ''
+body=''
+`
