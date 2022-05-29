@@ -1,0 +1,24 @@
+{
+  "name": "tlstransfer",
+  "version": "1.0.0",
+  "description": "golang tls transfer",
+  "main": "index.js",
+  "scripts": {
+    "test": "go test ./...",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/painterQ/tlsTransfer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/painterQ/tlsTransfer/issues"
+  },
+  "homepage": "https://github.com/painterQ/tlsTransfer#readme",
+  "devDependencies": {
+    "husky": "^8.0.1"
+  }
+}

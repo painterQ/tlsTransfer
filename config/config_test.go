@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+//nolint
 func TestMain(m *testing.M) {
 	var backup string
 	//1.检查是否在~目录下有配置文件
@@ -40,7 +41,6 @@ func TestMain(m *testing.M) {
 	}()
 
 	m.Run()
-
 }
 
 func TestGetPath(t *testing.T) {
